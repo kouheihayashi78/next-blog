@@ -1,10 +1,22 @@
 import Image from "next/image";
 import ArticleList from "./components/ArticleList";
-export default function Home() {
+import { getAllArticles } from "@/blogApi";
+
+export default async function Home() {
+  const articles = await getAllArticles();
+
+  // csrで読み込むならuseEffectを使い、関数のasyncを外し、上で"use client"宣言をする
+  // useEffect(() => {
+  //   const getAllBlogs = async () => {
+  //     const res = await fetch('http://localhost:3001/posts');
+  //     const articles = await res.json();
+  //   }
+  //   getAllBlogs();
+  // }, []);
   return (
     <div className="md:flex">
       <section className="w-full md:w-2/3 flex flex-col items-center px-3">
-        <ArticleList />
+        <ArticleList articles={articles} />
       </section>
       
       <aside className="w-full md:w-1/3 flex flex-col items-center px-3 md:pl-6">
