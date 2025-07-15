@@ -6,5 +6,8 @@ export const getAllArticles = async (): Promise<Article[]> => {
     // {next: {revalidate: 10}} → ISR
 
     const articles = await res.json(); // json形式にシリアライズ(文字列化)
+    if(!res.ok) {
+        throw new Error("エラーが発生しました")
+    }
     return articles;
 };

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+// プロパティに対する型定義（reactコンポーネントはpropsとして受け取る型を定義する必要がある）
 type ArticleList = {
   articles: Article[];
 };
