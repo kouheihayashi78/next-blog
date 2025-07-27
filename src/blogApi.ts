@@ -50,3 +50,15 @@ export const createArticle = async (id: string, title: string, content: string) 
     }
     return res;
 }
+
+export const deleteArticle = async (id: string) => {
+    // 現在日時取得
+    const res = await fetch(`http://localhost:3001/posts/${id}`, {
+        method: 'DELETE',
+    });
+
+    if(!res.ok){
+        throw new Error("削除中にエラーが発生しました。")
+    }
+    return res;
+}
