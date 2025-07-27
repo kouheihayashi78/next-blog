@@ -8,9 +8,11 @@ const CreateBlogPage = () => {
   const [id, setId] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // ページのリロード防ぐ
+    setLoading(true);
     if (id.length === 0 || title.length === 0 || content.length === 0) {
       alert("入力してください");
       return;
@@ -24,6 +26,7 @@ const CreateBlogPage = () => {
     } else {
       alert("登録は失敗しました。");
     }
+    setLoading(false);
   };
 
   return (
@@ -63,9 +66,15 @@ const CreateBlogPage = () => {
 
         <button
           type="submit"
-          className="py-2 px-4 border rounded-md bg-blue-300 text-center"
+          className={`py-2 px-4 border rounded-md text-center transition 
+            ${loading 
+              ? 'bg-gray-100 cursor-not-arrowed w-16 h-16 border-t-4 rounded-full animate-spin' 
+              : 'bg-blue-400 hover:bg-blue-500'
+            }
+          `}
+          disabled={loading}
         >
-          投稿
+          {`${loading ? '' : '投稿'}`}
         </button>
       </form>
     </div>
