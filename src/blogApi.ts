@@ -48,7 +48,5 @@ export const createArticle = async (id: string, title: string, content: string) 
     if(!res.ok){
         throw new Error("登録中にエラーが発生しました。")
     }
-
-    const newArticle = await res.json();
-    return newArticle;
+    return res;
 }

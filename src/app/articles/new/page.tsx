@@ -1,28 +1,75 @@
-import React from 'react'
+"use client";
+import { createArticle } from "@/blogApi";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
-const createBlogPage = () => {
+const CreateBlogPage = () => {
+  const router = useRouter();
+  const [id, setId] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // ページのリロード防ぐ
+    if (id.length === 0 || title.length === 0 || content.length === 0) {
+      alert("入力してください");
+      return;
+    }
+    const res = await createArticle(id, title, content);
+
+    if (res.ok) {
+      alert("登録は成功しました。");
+      router.push("/");
+      router.refresh();
+    } else {
+      alert("登録は失敗しました。");
+    }
+  };
+
   return (
     // 100vh
-    <div className='min-h-screen py-8 px-4 md:px-12'>
-      <h2 className='text-2xl font-bold mb-4 mt-1'>ブログ新規作成</h2>
-      <form className='bg-slate-200 p-6 rounded shadow-lg'>
-        <div className='mb-4'>
-            <label className="text-sm text-black text-bold mb-2">URL</label>
-            <input type="text" className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none" />
+    <div className="min-h-screen py-8 px-4 md:px-12">
+      <h2 className="text-2xl font-bold mb-4 mt-1">ブログ新規作成</h2>
+      <form
+        className="bg-slate-200 p-6 rounded shadow-lg"
+        onSubmit={handleSubmit}
+      >
+        <div className="mb-4">
+          <label className="text-sm text-black text-bold mb-2">URL</label>
+          <input
+            type="text"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+            className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none"
+          />
         </div>
-        <div className='mb-4'>
-            <label className="text-sm text-black text-bold mb-2">タイトル</label>
-            <input type="text" className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none" />
+        <div className="mb-4">
+          <label className="text-sm text-black text-bold mb-2">タイトル</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none"
+          />
         </div>
-        <div className='mb-4'>
-            <label className="text-sm text-black text-bold mb-2">本文</label>
-            <textarea className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none" />
+        <div className="mb-4">
+          <label className="text-sm text-black text-bold mb-2">本文</label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="shadow border rounded w-full py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none"
+          />
         </div>
 
-        <button type='submit' className='py-2 px-4 border rounded-md bg-blue-300 text-center'>投稿</button>
+        <button
+          type="submit"
+          className="py-2 px-4 border rounded-md bg-blue-300 text-center"
+        >
+          投稿
+        </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default createBlogPage
+export default CreateBlogPage;
