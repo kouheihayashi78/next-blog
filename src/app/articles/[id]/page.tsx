@@ -1,6 +1,7 @@
 import { getDetailArticle } from "@/blogApi";
 import Image from "next/image";
 import React from "react";
+import DeleteButton from "@/app/components/DeleteButton";
 
 const Article = async ({ params }: { params: { id: string } }) => {
   const res = await getDetailArticle(params.id);
@@ -17,6 +18,9 @@ const Article = async ({ params }: { params: { id: string } }) => {
       {/* line-height:1.625を与える */}
       <div className="text-lg leading-relaxed text-justify">
         <p>{res.content}</p>
+      </div>
+      <div className="text-right mt-3">
+        <DeleteButton id={res.id} />
       </div>
     </div>
   );
