@@ -1,10 +1,14 @@
-import { getDetailArticle } from "@/blogApi";
+// import { getDetailArticle } from "@/blogApi";
 import Image from "next/image";
 import React from "react";
 import DeleteButton from "@/app/components/DeleteButton";
 
 const Article = async ({ params }: { params: { id: string } }) => {
-  const res = await getDetailArticle(params.id);
+  // const res = await getDetailArticle(params.id);
+
+  const API_URL = process.env.NEXT_API_URL
+  let res = await fetch(`${API_URL}/api/${params.id}`, {next: { revalidate: 60 }})
+  res = await res.json();
 
   return (
     <div className="max-w-3xl mx-auto p-5">
