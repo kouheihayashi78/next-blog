@@ -1,8 +1,9 @@
 import ArticleList from "./components/ArticleList";
-import { getAllArticles } from "@/blogApi";
+// import { getAllArticles } from "@/blogApi";
 
 export default async function Home() {
-  const articles = await getAllArticles();
+  // json-serverを使っているのでコメントアウト
+  // const articles = await getAllArticles();
 
   // csrで読み込むならuseEffectを使い、関数のasyncを外し、上で"use client"宣言をする
   // useEffect(() => {
@@ -12,6 +13,12 @@ export default async function Home() {
   //   }
   //   getAllBlogs();
   // }, []);
+
+  // supabaseからデータを取得
+  const API_URL = process.env.NEXT_API_URL
+  const res = await fetch(`${API_URL}/api`, {cache: 'no-store'})
+  const articles = await res.json();
+
   return (
     <div className="md:flex">
       <section className="w-full md:w-2/3 flex flex-col items-center px-3">
