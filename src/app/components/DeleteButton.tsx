@@ -1,20 +1,20 @@
 "use client";
-import { deleteArticle } from "@/blogApi";
+// import { deleteArticle } from "@/blogApi";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const DeleteButton = ({ id }: { id: string }) => {
   const router = useRouter();
   const handleDelete = async () => {
-    const res = await deleteArticle(id);
+    // const res = await deleteArticle(id);
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    await fetch(`${API_URL}/api/${id}`, {
+      method: "DELETE",
+    });
 
-    if (res.ok) {
-      alert("削除は成功しました。");
-      router.push("/");
-      router.refresh();
-    } else {
-      alert("削除は失敗しました。");
-    }
+    alert("削除は成功しました。");
+    router.push("/");
+    router.refresh();
   };
   return (
     <button
