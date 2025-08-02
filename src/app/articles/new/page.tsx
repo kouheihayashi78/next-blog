@@ -1,5 +1,5 @@
 "use client";
-import { createArticle } from "@/blogApi";
+// import { createArticle } from "@/blogApi";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -13,20 +13,41 @@ const CreateBlogPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // ページのリロード防ぐ
     setLoading(true);
+
     if (id.length === 0 || title.length === 0 || content.length === 0) {
       alert("入力してください");
+      setLoading(false);
       return;
     }
-    const res = await createArticle(id, title, content);
+    // const res = await createArticle(id, title, content);
 
-    if (res.ok) {
-      alert("登録は成功しました。");
-      router.push("/");
-      router.refresh();
-    } else {
-      alert("登録は失敗しました。");
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    try {
+      const response = await fetch(`${API_URL}/api/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, title, content }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "記事の作成に失敗しました");
+      }
+
+      const data = await response.json();
+      console.log("記事作成成功:", data);
+      alert("記事が正常に作成されました！");
+      router.push("/"); // 一覧ページにリダイレクト
+    } catch (error) {
+      console.error("記事作成エラー:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "記事の作成に失敗しました";
+      alert(`記事の作成に失敗しました: ${errorMessage}`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -67,14 +88,15 @@ const CreateBlogPage = () => {
         <button
           type="submit"
           className={`py-2 px-4 border rounded-md text-center transition 
-            ${loading 
-              ? 'bg-gray-100 cursor-not-arrowed w-16 h-16 border-t-4 rounded-full animate-spin' 
-              : 'bg-blue-400 hover:bg-blue-500'
+            ${
+              loading
+                ? "bg-gray-100 cursor-not-arrowed w-16 h-16 border-t-4 rounded-full animate-spin"
+                : "bg-blue-400 hover:bg-blue-500"
             }
           `}
           disabled={loading}
         >
-          {`${loading ? '' : '投稿'}`}
+          {`${loading ? "" : "投稿"}`}
         </button>
       </form>
     </div>
