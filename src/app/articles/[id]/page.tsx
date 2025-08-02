@@ -6,7 +6,7 @@ import DeleteButton from "@/app/components/DeleteButton";
 const Article = async ({ params }: { params: { id: string } }) => {
   // const res = await getDetailArticle(params.id);
 
-  const API_URL = process.env.NEXT_API_URL
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
   let res = await fetch(`${API_URL}/api/${params.id}`, {next: { revalidate: 60 }})
   res = await res.json();
 

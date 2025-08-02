@@ -15,7 +15,7 @@ export default async function Home() {
   // }, []);
 
   // supabaseからデータを取得
-  const API_URL = process.env.NEXT_API_URL
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
   const res = await fetch(`${API_URL}/api`, {cache: 'no-store'})
   const articles = await res.json();
 
