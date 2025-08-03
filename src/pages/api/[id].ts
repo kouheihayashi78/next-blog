@@ -6,10 +6,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.query;
-
   switch (req.method) {
     case "GET":
+      const { id } = req.query;
       const { data, error } = await supabase
         .from("posts")
         .select("*")
@@ -26,12 +25,33 @@ export default async function handler(
       return res.status(200).json(data);
 
     case "DELETE":
-      const { error: deleteError } = await supabase.from("posts").delete().eq("id", id);
+      const { deleteId } = req.query;
+      const { error: deleteError } = await supabase
+        .from("posts")
+        .delete()
+        .eq("id", deleteId);
 
       if (deleteError) {
         return res.status(500).json({ error: deleteError.message });
       }
 
-      return res.status(200).json({message: '削除は成功しました。'});
+      return res.status(200).json({ message: "削除は成功しました。" });
+    case "PUT":
+      const {updateId, title, content} = req.body;
+      const { data: updateData, error: updateError } = await supabase
+        .from("posts")
+        .update({ title: title, content: content })
+        .eq("id", updateId)
+        .select();
+
+      if (!updateData) {
+        notFound();
+      }
+
+      if (updateError) {
+        return res.status(500).json({ error: updateError });
+      }
+
+      return res.status(200).json({ message: "更新は成功しました。" });
   }
 }
