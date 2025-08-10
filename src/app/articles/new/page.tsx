@@ -23,7 +23,7 @@ const CreateBlogPage = () => {
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     try {
-      const response = await fetch(`${API_URL}/api/create`, {
+      const response = await fetch(`${API_URL}/api/blog`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
