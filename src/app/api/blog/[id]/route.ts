@@ -46,3 +46,20 @@ export async function DELETE(
 
   return NextResponse.json({ status: 200 });
 }
+
+export async function PUT(req: Request) {
+  // [id]の部分を取得する
+  const { updateId, title, content } = await req.json();
+
+  const { error: updateError } = await supabase
+    .from("posts")
+    .update({ title: title, content: content })
+    .eq("id", updateId)
+    .select();
+
+  if (updateError) {
+    return NextResponse.json({ error: updateError.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ status: 200 });
+}

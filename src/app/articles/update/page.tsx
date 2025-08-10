@@ -30,7 +30,7 @@ const Update = () => {
 
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      const response = await fetch(`${API_URL}/api/${updateId}`, {
+      const response = await fetch(`${API_URL}/api/blog/${updateId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
