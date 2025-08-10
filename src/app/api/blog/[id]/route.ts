@@ -27,3 +27,22 @@ export async function GET(
 
   return NextResponse.json(data);
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  // [id]の部分を取得する
+  const { id } = params;
+
+  const { error: deleteError } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", id);
+
+  if (deleteError) {
+    return NextResponse.json({ error: deleteError.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ status: 200 });
+}
